@@ -217,27 +217,6 @@ cmd.SysProcAttr = &syscall.SysProcAttr{
 - ✅ Administrator rights required by Windows security
 - ✅ Uses official Windows API, safe and reliable
 
-## 📝 Changelog
-
-### v2.1 (2024-12-04)
-- ✨ Use Windows API instead of PowerShell, no window popups
-- ✨ Read friendly adapter names from registry
-- ✨ Fix configuration list real-time update issue
-- ✨ Fix startup auto-detection of configuration
-- ✨ Optimize details display format (proper line breaks)
-- 🐛 Fix netsh command execution failure
-
-### v2.0 (2024-12-04)
-- ✨ Complete redesign, support adapter selection
-- ✨ Support add, edit, delete configurations
-- ✨ Persistent configuration storage
-- ✨ Support managing multiple adapters
-- ✨ Optimize UI and interaction
-
-### v1.0 (2024-12-04)
-- 🎉 Initial release
-- ✅ Basic configuration switching functionality
-
 ## 📄 License
 
 MIT License - Free to use, modify, and distribute
@@ -246,7 +225,3 @@ MIT License - Free to use, modify, and distribute
 
 Issues and Pull Requests are welcome!
 
----
-
-**Project Name Suggestions**: quick-ip-switcher, network-config-manager, ip-switcher-win
-**Recommended**: `quick-ip-switcher`
