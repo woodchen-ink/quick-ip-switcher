@@ -9,8 +9,8 @@ import (
 
 // Config 应用配置
 type Config struct {
-	SelectedInterface string            `json:"selected_interface"`
-	NetworkConfigs    []NetworkConfig   `json:"network_configs"`
+	SelectedInterface string          `json:"selected_interface"`
+	NetworkConfigs    []NetworkConfig `json:"network_configs"`
 }
 
 // NetworkConfig 网络配置
