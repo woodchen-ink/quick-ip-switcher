@@ -11,6 +11,9 @@
 
 [English Documentation](README_EN.md)
 
+<img width="586" height="663" alt="image" src="https://github.com/user-attachments/assets/0e72aa38-ef3e-4cca-af14-9d8edc1ca8d6" />
+
+
 ## ✨ 功能特性
 
 ✅ **网卡选择** - 自动列出所有网络适配器,显示友好名称(如"以太网3")
