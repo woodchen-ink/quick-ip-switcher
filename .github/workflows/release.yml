@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Get version from tag
+        id: get_version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Install rsrc
+        run: go install github.com/akavel/rsrc@latest
+
+      - name: Generate resource file
+        run: |
+          $manifestContent = @"
+          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+              <assemblyIdentity
+                  version="1.0.0.0"
+                  processorArchitecture="*"
+                  name="QuickIPSwitcher"
+                  type="win32"
+              />
+              <description>Quick IP Configuration Switcher</description>
+              <dependency>
+                  <dependentAssembly>
+                      <assemblyIdentity
+                          type="win32"
+                          name="Microsoft.Windows.Common-Controls"
+                          version="6.0.0.0"
+                          processorArchitecture="*"
+                          publicKeyToken="6595b64144ccf1df"
+                          language="*"
+                      />
+                  </dependentAssembly>
+              </dependency>
+              <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+                  <security>
+                      <requestedPrivileges>
+                          <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+                      </requestedPrivileges>
+                  </security>
+              </trustInfo>
+              <asmv3:application>
+                  <asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
+                      <dpiAware>true</dpiAware>
+                  </asmv3:windowsSettings>
+              </asmv3:application>
+          </assembly>
+          "@
+          $manifestContent | Out-File -FilePath "app.manifest" -Encoding UTF8
+          & "$env:USERPROFILE\go\bin\rsrc.exe" -manifest app.manifest -o rsrc.syso
+
+      - name: Build
+        run: |
+          go build -ldflags="-H windowsgui -X main.Version=${{ steps.get_version.outputs.VERSION }}" -o quick-ip-switcher.exe
+
+      - name: Create ZIP package
+        run: |
+          Compress-Archive -Path quick-ip-switcher.exe,README.md,README_EN.md,使用说明.txt,LICENSE -DestinationPath quick-ip-switcher-${{ steps.get_version.outputs.VERSION }}-windows-amd64.zip
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            quick-ip-switcher-${{ steps.get_version.outputs.VERSION }}-windows-amd64.zip
+            quick-ip-switcher.exe
+          body: |
+            ## Quick IP Switcher ${{ steps.get_version.outputs.VERSION }}
+
+            ### 下载说明
+            - `quick-ip-switcher.exe` - 单文件可执行程序
+            - `quick-ip-switcher-${{ steps.get_version.outputs.VERSION }}-windows-amd64.zip` - 包含文档的完整包
+
+            ### 使用方法
+            1. 下载 `quick-ip-switcher.exe`
+            2. 右键以管理员身份运行(或直接双击,会自动请求权限)
+            3. 选择网卡,添加配置,一键切换
+
+            ### 系统要求
+            - Windows 10/11
+            - 需要管理员权限
+
+            完整文档请查看 [README.md](https://github.com/${{ github.repository }}/blob/main/README.md)
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
