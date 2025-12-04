@@ -8,14 +8,14 @@ Built with Go, packaged as a single executable with no dependencies required.
 
 ## ✨ Features
 
-✅ **Adapter Selection** - Automatically lists all network adapters with friendly names (e.g., "Ethernet 3")
-✅ **Configuration Management** - Add, edit, and delete multiple network configurations
-✅ **One-Click Switching** - Quickly switch between different configurations
-✅ **Persistent Storage** - Configurations automatically saved to JSON file
-✅ **Real-Time Status** - Display current network configuration information
-✅ **Native GUI** - Clean Windows native interface
-✅ **Single Executable** - No dependencies, run directly
-✅ **No Window Popups** - Uses Windows API, no PowerShell windows flash
+✅ **Adapter Selection** - Automatically lists all network adapters with friendly names (e.g., "Ethernet 3")  
+✅ **Configuration Management** - Add, edit, and delete multiple network configurations  
+✅ **One-Click Switching** - Quickly switch between different configurations  
+✅ **Persistent Storage** - Configurations automatically saved to JSON file  
+✅ **Real-Time Status** - Display current network configuration information  
+✅ **Native GUI** - Clean Windows native interface  
+✅ **Single Executable** - No dependencies, run directly  
+✅ **No Window Popups** - Uses Windows API, no PowerShell windows flash  
 
 ## 📦 Quick Start
 
